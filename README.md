@@ -1,5 +1,7 @@
 # Rust VEML6075 UVA and UVB Light Sensor Driver [![crates.io](https://img.shields.io/crates/v/veml6075.svg)](https://crates.io/crates/veml6075) [![Docs](https://docs.rs/veml6075/badge.svg)](https://docs.rs/veml6075)
 
+[![Build Status](https://travis-ci.org/eldruin/veml6075-rs.svg?branch=master)](https://travis-ci.org/eldruin/veml6075-rs)
+
 This is a platform agnostic Rust driver for the VEML6075 UVA and UVB light sensor,
 based on the [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) traits.
 
