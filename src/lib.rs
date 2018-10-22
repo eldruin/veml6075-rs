@@ -29,7 +29,7 @@
 //! Application note:
 //! - [VEML6075 AN](https://www.vishay.com/docs/84339/designingveml6075.pdf)
 //!
-//! //! ## Usage examples (see also examples folder)
+//! ## Usage examples (see also examples folder)
 //!
 //! ### Read UVA and UVB
 //!
