@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-...
+### Changed
+- [breaking-change] Renamed VEML6075 -> Veml6075 to comply with Rust naming conventions.
 
 ## 0.1.0 - 2018-10-13
 

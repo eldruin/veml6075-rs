@@ -1,4 +1,4 @@
-//! This is a platform agnostic Rust driver for the VEML6075 UVA and UVB 
+//! This is a platform agnostic Rust driver for the VEML6075 UVA and UVB
 //! light sensor, based on the [`embedded-hal`] traits.
 //!
 //! [`embedded-hal`]: https://github.com/rust-embedded/embedded-hal
@@ -41,11 +41,11 @@
 //! extern crate veml6075;
 //!
 //! use hal::I2cdev;
-//! use veml6075::VEML6075;
+//! use veml6075::Veml6075;
 //!
 //! # fn main() {
 //! let dev = I2cdev::new("/dev/i2c-1").unwrap();
-//! let mut uv_light_sensor = VEML6075::new(dev);
+//! let mut uv_light_sensor = Veml6075::new(dev);
 //! uv_light_sensor.enable().unwrap();
 //! let _uva_reading = uv_light_sensor.read_uva().unwrap();
 //! let _uvb_reading = uv_light_sensor.read_uvb().unwrap();
@@ -85,22 +85,22 @@ impl BitFlags {
 
 const DEVICE_ADDRESS : u8 = 0x10;
 
-/// VEML6075 device driver.
+/// Veml6075 device driver.
 #[derive(Debug, Default)]
-pub struct VEML6075<I2C> {
+pub struct Veml6075<I2C> {
     /// The concrete I²C device implementation.
     i2c: I2C,
     /// Configuration register status.
     config: u8,
 }
 
-impl<I2C, E> VEML6075<I2C>
+impl<I2C, E> Veml6075<I2C>
 where
     I2C: Write<Error = E>
 {
-    /// Create new instance of the VEML6075 device.
+    /// Create new instance of the Veml6075 device.
     pub fn new(i2c: I2C) -> Self {
-        VEML6075 {
+        Veml6075 {
             i2c,
             config : 0x01 // shutdown
         }
@@ -133,7 +133,7 @@ where
 }
 
 
-impl<I2C, E> VEML6075<I2C>
+impl<I2C, E> Veml6075<I2C>
 where
     I2C: hal::blocking::i2c::WriteRead<Error = E>
 {

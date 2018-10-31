@@ -1,8 +1,8 @@
 extern crate veml6075;
 extern crate embedded_hal_mock as hal;
-use veml6075::VEML6075;
+use veml6075::Veml6075;
 
-const DEVICE_ADDRESS : u8 = 0x10; 
+const DEVICE_ADDRESS : u8 = 0x10;
 struct Register;
 impl Register {
     const CONFIG    : u8 = 0x00;
@@ -13,13 +13,13 @@ impl Register {
     const DEVICE_ID : u8 = 0x0C;
 }
 
-fn setup<'a>(data: &'a[u8]) -> VEML6075<hal::I2cMock<'a>> {
+fn setup<'a>(data: &'a[u8]) -> Veml6075<hal::I2cMock<'a>> {
     let mut dev = hal::I2cMock::new();
     dev.set_read_data(&data);
-    VEML6075::new(dev)
+    Veml6075::new(dev)
 }
 
-fn check_sent_data(sensor: VEML6075<hal::I2cMock>, address: u8, data: &[u8]) {
+fn check_sent_data(sensor: Veml6075<hal::I2cMock>, address: u8, data: &[u8]) {
     let dev = sensor.destroy();
     assert_eq!(dev.get_last_address(), Some(address));
     assert_eq!(dev.get_write_data(), &data[..]);
