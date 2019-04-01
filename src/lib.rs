@@ -167,6 +167,6 @@ where
         self.i2c
             .write_read(DEVICE_ADDRESS, &[register], &mut data)
             .map_err(Error::I2C)?;
-        Ok((data[1] as u16) << 8 | data[0] as u16)
+        Ok(u16::from(data[1]) << 8 | u16::from(data[0]))
     }
 }
