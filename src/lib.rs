@@ -69,21 +69,21 @@ pub enum Error<E> {
 struct Register;
 
 impl Register {
-    const CONFIG    : u8 = 0x00;
-    const UVA       : u8 = 0x07;
-    const UVB       : u8 = 0x09;
-    const UVCOMP1   : u8 = 0x0A;
-    const UVCOMP2   : u8 = 0x0B;
-    const DEVICE_ID : u8 = 0x0C;
+    const CONFIG: u8 = 0x00;
+    const UVA: u8 = 0x07;
+    const UVB: u8 = 0x09;
+    const UVCOMP1: u8 = 0x0A;
+    const UVCOMP2: u8 = 0x0B;
+    const DEVICE_ID: u8 = 0x0C;
 }
 
 struct BitFlags;
 
 impl BitFlags {
-    const SHUTDOWN   : u8 = 0b0000_0001;
- }
+    const SHUTDOWN: u8 = 0b0000_0001;
+}
 
-const DEVICE_ADDRESS : u8 = 0x10;
+const DEVICE_ADDRESS: u8 = 0x10;
 
 /// Veml6075 device driver.
 #[derive(Debug, Default)]
@@ -96,13 +96,13 @@ pub struct Veml6075<I2C> {
 
 impl<I2C, E> Veml6075<I2C>
 where
-    I2C: Write<Error = E>
+    I2C: Write<Error = E>,
 {
     /// Create new instance of the Veml6075 device.
     pub fn new(i2c: I2C) -> Self {
         Veml6075 {
             i2c,
-            config : 0x01 // shutdown
+            config: 0x01, // shutdown
         }
     }
 
@@ -119,7 +119,7 @@ where
 
     /// Disable the sensor (shutdown).
     pub fn disable(&mut self) -> Result<(), Error<E>> {
-        let config  = self.config;
+        let config = self.config;
         self.write_config(config | BitFlags::SHUTDOWN)
     }
 
@@ -132,10 +132,9 @@ where
     }
 }
 
-
 impl<I2C, E> Veml6075<I2C>
 where
-    I2C: hal::blocking::i2c::WriteRead<Error = E>
+    I2C: hal::blocking::i2c::WriteRead<Error = E>,
 {
     /// Read the UVA sensor data.
     pub fn read_uva(&mut self) -> Result<u16, Error<E>> {
