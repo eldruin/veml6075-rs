@@ -10,12 +10,13 @@ This is a platform agnostic Rust driver for the VEML6075 UVA and UVB light senso
 based on the [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) traits.
 
 This driver allows you to:
-- Enable/disable the sensor
-- Read the UVA measurement
-- Read the UVB measurement
-- Read the UVcomp1 measurement
-- Read the UVcomp2 measurement
-- Read the device id
+- Enable/disable the sensor. See `enable()`.
+- Read the UVA measurement. See `read_uva()`.
+- Read the UVB measurement. See `read_uvb()`.
+- Read the UVcomp1 measurement. See `read_uvcomp1()`.
+- Read the UVcomp2 measurement. See `read_uvcomp2()`.
+- Read all sensor data at once. See `read_all()`.
+- Read the device id. See `read_device_id()`.
 
 ## The device
 The VEML6075 senses UVA and UVB light and incorporates photodiode, amplifiers,
