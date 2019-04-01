@@ -12,12 +12,12 @@ homepage = "https://github.com/eldruin/veml6075-rs"
 documentation = "https://docs.rs/veml6075"
 
 include = [
-    "**/*.rs",
-    "Cargo.toml",
-    "README.md",
-    "CHANGELOG.md",
-    "LICENSE-MIT",
-    "LICENSE-APACHE",
+    "/**/*.rs",
+    "/Cargo.toml",
+    "/README.md",
+    "/CHANGELOG.md",
+    "/LICENSE-MIT",
+    "/LICENSE-APACHE",
 ]
 
 [badges.travis-ci]
