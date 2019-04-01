@@ -49,6 +49,21 @@
 //! println!("Measurements UVA: {}, UVB: {}", uva, uvb);
 //! # }
 //! ```
+//!
+//! ### Read all channels at once
+//!
+//! ```no_run
+//! extern crate linux_embedded_hal as hal;
+//! extern crate veml6075;
+//! use veml6075::Veml6075;
+//!
+//! # fn main() {
+//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let mut sensor = Veml6075::new(dev);
+//! let measurement = sensor.read_all().unwrap();
+//! println!("Measurements UVA: {}, UVB: {}", measurement.uva, measurement.uvb);
+//! # }
+//! ```
 
 #![deny(unsafe_code)]
 #![deny(missing_docs)]
