@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Method to read all channels at once.
+
 ### Changed
 - [breaking-change] Renamed VEML6075 -> Veml6075 to comply with Rust naming conventions.
 

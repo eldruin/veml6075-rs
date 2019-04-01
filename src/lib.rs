@@ -66,6 +66,19 @@ pub enum Error<E> {
     I2C(E),
 }
 
+/// Result of measurement of all channels
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Measurement {
+    /// UVA sensor data
+    pub uva: u16,
+    /// UVB sensor data
+    pub uvb: u16,
+    /// UVcomp1 sensor data
+    pub uvcomp1: u16,
+    /// UVcomp2 sensor data
+    pub uvcomp2: u16,
+}
+
 struct Register;
 
 impl Register {
@@ -136,6 +149,16 @@ impl<I2C, E> Veml6075<I2C>
 where
     I2C: hal::blocking::i2c::WriteRead<Error = E>,
 {
+    /// Read the sensor data of all channels at once.
+    pub fn read_all(&mut self) -> Result<Measurement, Error<E>> {
+        Ok(Measurement {
+            uva: self.read_uva()?,
+            uvb: self.read_uvb()?,
+            uvcomp1: self.read_uvcomp1()?,
+            uvcomp2: self.read_uvcomp2()?,
+        })
+    }
+
     /// Read the UVA sensor data.
     pub fn read_uva(&mut self) -> Result<u16, Error<E>> {
         self.read_register(Register::UVA)

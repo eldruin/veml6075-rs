@@ -1,7 +1,7 @@
 extern crate embedded_hal_mock as hal;
 extern crate veml6075;
 use hal::i2c::{Mock as I2cMock, Transaction as I2cTrans};
-use veml6075::Veml6075;
+use veml6075::{Measurement, Veml6075};
 
 const DEVICE_ADDRESS: u8 = 0x10;
 struct Register;
@@ -66,3 +66,25 @@ read_test!(can_read_uvb, read_uvb, UVB);
 read_test!(can_read_uvcomp1, read_uvcomp1, UVCOMP1);
 read_test!(can_read_uvcomp2, read_uvcomp2, UVCOMP2);
 read_test!(can_read_dev_id, read_device_id, DEVICE_ID);
+
+#[test]
+fn can_read_all() {
+    let transactions = [
+        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVA], vec![0x34, 0x12]),
+        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVB], vec![0x78, 0x56]),
+        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVCOMP1], vec![0xBC, 0x9A]),
+        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVCOMP2], vec![0xF0, 0xDE]),
+    ];
+    let mut dev = new(&transactions);
+    let measurement = dev.read_all().unwrap();
+    assert_eq!(
+        Measurement {
+            uva: 0x1234,
+            uvb: 0x5678,
+            uvcomp1: 0x9ABC,
+            uvcomp2: 0xDEF0,
+        },
+        measurement
+    );
+    destroy(dev);
+}
