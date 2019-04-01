@@ -1,6 +1,7 @@
 extern crate embedded_hal_mock as hal;
 extern crate veml6075;
 use veml6075::Veml6075;
+use hal::i2c::{Transaction as I2cTrans, Mock as I2cMock};
 
 const DEVICE_ADDRESS: u8 = 0x10;
 struct Register;
@@ -13,68 +14,74 @@ impl Register {
     const DEVICE_ID: u8 = 0x0C;
 }
 
-fn setup<'a>(data: &'a [u8]) -> Veml6075<hal::I2cMock<'a>> {
-    let mut dev = hal::I2cMock::new();
-    dev.set_read_data(&data);
-    Veml6075::new(dev)
+
+pub fn new(
+    transactions: &[I2cTrans],
+) -> Veml6075<I2cMock> {
+    Veml6075::new(I2cMock::new(&transactions))
 }
 
-fn check_sent_data(sensor: Veml6075<hal::I2cMock>, address: u8, data: &[u8]) {
-    let dev = sensor.destroy();
-    assert_eq!(dev.get_last_address(), Some(address));
-    assert_eq!(dev.get_write_data(), &data[..]);
+pub fn destroy(sensor: Veml6075<I2cMock>) {
+    sensor.destroy().done();
 }
 
 #[test]
 fn can_enable() {
-    let mut dev = setup(&[0]);
+    let transactions = [I2cTrans::write(DEVICE_ADDRESS, vec![Register::CONFIG, 0, 0])];
+    let mut dev = new(&transactions);
     dev.enable().unwrap();
-    check_sent_data(dev, DEVICE_ADDRESS, &[Register::CONFIG, 0, 0]);
+    destroy(dev);
 }
 
 #[test]
 fn can_disable() {
-    let mut dev = setup(&[0]);
+    let transactions = [I2cTrans::write(DEVICE_ADDRESS, vec![Register::CONFIG, 1, 0])];
+    let mut dev = new(&transactions);
     dev.disable().unwrap();
-    check_sent_data(dev, DEVICE_ADDRESS, &[Register::CONFIG, 1, 0]);
+    destroy(dev);
 }
 
 #[test]
 fn can_read_uva() {
-    let mut dev = setup(&[0xCD, 0xAB]);
+    let transactions = [I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVA], vec![0xCD, 0xAB])];
+    let mut dev = new(&transactions);
     let reading = dev.read_uva().unwrap();
     assert_eq!(reading, 0xABCD);
-    check_sent_data(dev, DEVICE_ADDRESS, &[Register::UVA]);
+    destroy(dev);
 }
 
 #[test]
 fn can_read_uvb() {
-    let mut dev = setup(&[0xCD, 0xAB]);
+    let transactions = [I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVB], vec![0xCD, 0xAB])];
+    let mut dev = new(&transactions);
     let reading = dev.read_uvb().unwrap();
     assert_eq!(reading, 0xABCD);
-    check_sent_data(dev, DEVICE_ADDRESS, &[Register::UVB]);
+    destroy(dev);
 }
 
 #[test]
 fn can_read_uvcomp1() {
-    let mut dev = setup(&[0xCD, 0xAB]);
+    let transactions = [I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVCOMP1], vec![0xCD, 0xAB])];
+    let mut dev = new(&transactions);
     let reading = dev.read_uvcomp1().unwrap();
     assert_eq!(reading, 0xABCD);
-    check_sent_data(dev, DEVICE_ADDRESS, &[Register::UVCOMP1]);
+    destroy(dev);
 }
 
 #[test]
 fn can_read_uvcomp2() {
-    let mut dev = setup(&[0xCD, 0xAB]);
+        let transactions = [I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVCOMP2], vec![0xCD, 0xAB])];
+    let mut dev = new(&transactions);
     let reading = dev.read_uvcomp2().unwrap();
     assert_eq!(reading, 0xABCD);
-    check_sent_data(dev, DEVICE_ADDRESS, &[Register::UVCOMP2]);
+    destroy(dev);
 }
 
 #[test]
 fn can_read_device_id() {
-    let mut dev = setup(&[0xCD, 0xAB]);
+    let transactions = [I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::DEVICE_ID], vec![0xCD, 0xAB])];
+    let mut dev = new(&transactions);
     let reading = dev.read_device_id().unwrap();
     assert_eq!(reading, 0xABCD);
-    check_sent_data(dev, DEVICE_ADDRESS, &[Register::DEVICE_ID]);
+    destroy(dev);
 }
