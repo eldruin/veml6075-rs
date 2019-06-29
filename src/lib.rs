@@ -108,8 +108,16 @@ pub enum IntegrationTime {
     Ms800,
 }
 
-struct Register;
+/// Dynamic setting
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum DynamicSetting {
+    /// Normal dynamic setting
+    Normal,
+    /// High dynamic setting
+    High,
+}
 
+struct Register;
 impl Register {
     const CONFIG: u8 = 0x00;
     const UVA: u8 = 0x07;
@@ -120,9 +128,9 @@ impl Register {
 }
 
 struct BitFlags;
-
 impl BitFlags {
     const SHUTDOWN: u8 = 0b0000_0001;
+    const HD: u8 = 0b0000_1000;
 }
 
 const DEVICE_ADDRESS: u8 = 0x10;
@@ -174,6 +182,15 @@ where
             IntegrationTime::Ms200 => config | 2 << 4,
             IntegrationTime::Ms400 => config | 3 << 4,
             IntegrationTime::Ms800 => config | 4 << 4,
+        };
+        self.write_config(config)
+    }
+
+    /// Set the dynamic setting.
+    pub fn set_dynamic_setting(&mut self, ds: DynamicSetting) -> Result<(), Error<E>> {
+        let config = match ds {
+            DynamicSetting::Normal => self.config & !BitFlags::HD,
+            DynamicSetting::High => self.config | BitFlags::HD,
         };
         self.write_config(config)
     }

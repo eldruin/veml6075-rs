@@ -1,7 +1,7 @@
 extern crate embedded_hal_mock as hal;
 extern crate veml6075;
 use hal::i2c::{Mock as I2cMock, Transaction as I2cTrans};
-use veml6075::{IntegrationTime as IT, Measurement, Veml6075};
+use veml6075::{DynamicSetting as DS, IntegrationTime as IT, Measurement, Veml6075};
 
 const DEVICE_ADDRESS: u8 = 0x10;
 struct Register;
@@ -44,6 +44,8 @@ cfg_test!(set_it_100, set_integration_time, 0b0001_0001, IT::Ms100);
 cfg_test!(set_it_200, set_integration_time, 0b0010_0001, IT::Ms200);
 cfg_test!(set_it_400, set_integration_time, 0b0011_0001, IT::Ms400);
 cfg_test!(set_it_800, set_integration_time, 0b0100_0001, IT::Ms800);
+cfg_test!(set_ds_normal, set_dynamic_setting, 1, DS::Normal);
+cfg_test!(set_ds_high, set_dynamic_setting, 0b0000_1001, DS::High);
 
 macro_rules! read_test {
     ($name:ident, $method:ident, $reg:ident) => {
