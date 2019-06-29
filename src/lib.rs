@@ -140,6 +140,7 @@ struct BitFlags;
 impl BitFlags {
     const SHUTDOWN: u8 = 0b0000_0001;
     const HD: u8 = 0b0000_1000;
+    const UV_TRIG: u8 = 0b0000_0100;
     const UV_AF: u8 = 0b0000_0010;
 }
 
@@ -195,6 +196,15 @@ where
             Mode::ActiveForce => self.config | BitFlags::UV_AF,
         };
         self.write_config(config)
+    }
+
+    /// Trigger a measurement when on active force (one-shot) mode.
+    pub fn trigger_measurement(&mut self) -> Result<(), Error<E>> {
+        // this flag will automatically be set back to 0.
+        let config = self.config | BitFlags::UV_TRIG;
+        self.i2c
+            .write(DEVICE_ADDRESS, &[Register::CONFIG, config, 0])
+            .map_err(Error::I2C)
     }
 
     /// Set the integration time.

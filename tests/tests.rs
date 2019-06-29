@@ -48,6 +48,7 @@ cfg_test!(set_ds_normal, set_dynamic_setting, 1, DS::Normal);
 cfg_test!(set_ds_high, set_dynamic_setting, 0b0000_1001, DS::High);
 cfg_test!(set_continuous, set_mode, 1, Mode::Continuous);
 cfg_test!(set_active_force, set_mode, 0b0000_0011, Mode::ActiveForce);
+cfg_test!(can_trigger, trigger_measurement, 0b0000_0101);
 
 macro_rules! read_test {
     ($name:ident, $method:ident, $reg:ident) => {
