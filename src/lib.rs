@@ -117,6 +117,15 @@ pub enum DynamicSetting {
     High,
 }
 
+/// Operating mode
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Mode {
+    /// Continuous measurement (default)
+    Continuous,
+    /// Active force (one-shot)
+    ActiveForce,
+}
+
 struct Register;
 impl Register {
     const CONFIG: u8 = 0x00;
@@ -131,6 +140,7 @@ struct BitFlags;
 impl BitFlags {
     const SHUTDOWN: u8 = 0b0000_0001;
     const HD: u8 = 0b0000_1000;
+    const UV_AF: u8 = 0b0000_0010;
 }
 
 const DEVICE_ADDRESS: u8 = 0x10;
@@ -171,6 +181,20 @@ where
     pub fn disable(&mut self) -> Result<(), Error<E>> {
         let config = self.config;
         self.write_config(config | BitFlags::SHUTDOWN)
+    }
+
+    /// Set operating mode
+    pub fn set_mode(&mut self, mode: Mode) -> Result<(), Error<E>> {
+        // This device does not report when a measurement is finished
+        // so an non-blocking (`nb`) API is not possible to implement.
+        // This is why I think the APIs are not different enough to
+        // grant `into_one_shot()` and `into_continuous()` transformation
+        // methods as the error handling for those is somewhat cumbersome.
+        let config = match mode {
+            Mode::Continuous => self.config & !BitFlags::UV_AF,
+            Mode::ActiveForce => self.config | BitFlags::UV_AF,
+        };
+        self.write_config(config)
     }
 
     /// Set the integration time.
