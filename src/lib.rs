@@ -93,6 +93,21 @@ pub struct Measurement {
     pub uvcomp2: u16,
 }
 
+/// Integration time
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum IntegrationTime {
+    /// 50 ms
+    Ms50,
+    /// 100 ms
+    Ms100,
+    /// 200 ms
+    Ms200,
+    /// 400 ms
+    Ms400,
+    /// 800 ms
+    Ms800,
+}
+
 struct Register;
 
 impl Register {
@@ -148,6 +163,19 @@ where
     pub fn disable(&mut self) -> Result<(), Error<E>> {
         let config = self.config;
         self.write_config(config | BitFlags::SHUTDOWN)
+    }
+
+    /// Set the integration time.
+    pub fn set_integration_time(&mut self, it: IntegrationTime) -> Result<(), Error<E>> {
+        let config = self.config & 0b1000_1111;
+        let config = match it {
+            IntegrationTime::Ms50 => config,
+            IntegrationTime::Ms100 => config | 1 << 4,
+            IntegrationTime::Ms200 => config | 2 << 4,
+            IntegrationTime::Ms400 => config | 3 << 4,
+            IntegrationTime::Ms800 => config | 4 << 4,
+        };
+        self.write_config(config)
     }
 
     fn write_config(&mut self, config: u8) -> Result<(), Error<E>> {
