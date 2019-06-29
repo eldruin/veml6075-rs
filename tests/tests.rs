@@ -22,27 +22,23 @@ pub fn destroy(sensor: Veml6075<I2cMock>) {
     sensor.destroy().done();
 }
 
-#[test]
-fn can_enable() {
-    let transactions = [I2cTrans::write(
-        DEVICE_ADDRESS,
-        vec![Register::CONFIG, 0, 0],
-    )];
-    let mut dev = new(&transactions);
-    dev.enable().unwrap();
-    destroy(dev);
+macro_rules! cfg_test {
+    ($name:ident, $method:ident, $value:expr $(, $arg:expr)* ) => {
+        #[test]
+        fn $name() {
+            let transactions = [I2cTrans::write(
+                DEVICE_ADDRESS,
+                vec![Register::CONFIG, $value, 0],
+            )];
+            let mut dev = new(&transactions);
+            dev.$method($($arg),*).unwrap();
+            destroy(dev);
+        }
+    };
 }
 
-#[test]
-fn can_disable() {
-    let transactions = [I2cTrans::write(
-        DEVICE_ADDRESS,
-        vec![Register::CONFIG, 1, 0],
-    )];
-    let mut dev = new(&transactions);
-    dev.disable().unwrap();
-    destroy(dev);
-}
+cfg_test!(can_enable, enable, 0);
+cfg_test!(can_disable, disable, 1);
 
 macro_rules! read_test {
     ($name:ident, $method:ident, $reg:ident) => {
