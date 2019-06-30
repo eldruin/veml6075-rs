@@ -4,17 +4,29 @@
 //! [`embedded-hal`]: https://github.com/rust-embedded/embedded-hal
 //!
 //! This driver allows you to:
-//! - Enable/disable the sensor. See: `enable()`.
-//! - Read the UVA measurement. See: `read_uva()`.
-//! - Read the UVB measurement. See: `read_uvb()`.
-//! - Read the UVcomp1 measurement. See: `read_uvcomp1()`.
-//! - Read the UVcomp2 measurement. See: `read_uvcomp2()`.
-//! - Read all sensor data at once. See: `read_all()`.
-//! - Set integration time. See: `set_integration_time()`.
-//! - Set dynamic setting. See: `set_dynamic_setting()`.
-//! - Change operating mode. See: `set_mode()`.
-//! - Trigger measurement when on active force mode. See: `trigger_measurement()`.
-//! - Read the device id. See: `read_device_id()`.
+//! - Enable/disable the sensor. See: [`enable()`].
+//! - Read the UVA measurement. See: [`read_uva()`].
+//! - Read the UVB measurement. See: [`read_uvb()`].
+//! - Read the UVcomp1 measurement. See: [`read_uvcomp1()`].
+//! - Read the UVcomp2 measurement. See: [`read_uvcomp2()`].
+//! - Read all sensor data at once. See: [`read_all()`].
+//! - Set integration time. See: [`set_integration_time()`].
+//! - Set dynamic setting. See: [`set_dynamic_setting()`].
+//! - Change operating mode. See: [`set_mode()`].
+//! - Trigger measurement when on active force mode. See: [`trigger_measurement()`].
+//! - Read the device id. See: [`read_device_id()`].
+//!
+//! [`enable()`]: struct.Veml6075.html#method.enable
+//! [`read_uva()`]: struct.Veml6075.html#method.read_uva
+//! [`read_uvb()`]: struct.Veml6075.html#method.read_uvb
+//! [`read_uvcomp1()`]: struct.Veml6075.html#method.read_uvcomp1
+//! [`read_uvcomp2()`]: struct.Veml6075.html#method.read_uvcomp2
+//! [`read_all()`]: struct.Veml6075.html#method.read_all
+//! [`set_integration_time()`]: struct.Veml6075.html#method.set_integration_time
+//! [`set_dynamic_setting()`]: struct.Veml6075.html#method.set_dynamic_setting
+//! [`set_mode()`]: struct.Veml6075.html#method.set_mode
+//! [`trigger_measurement()`]: struct.Veml6075.html#method.trigger_measurement
+//! [`read_device_id()`]: struct.Veml6075.html#method.read_device_id
 //!
 //! ## The device
 //! The VEML6075 senses UVA and UVB light and incorporates photodiode,
