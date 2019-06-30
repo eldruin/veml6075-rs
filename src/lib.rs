@@ -81,6 +81,54 @@
 //! println!("Measurements UVA: {}, UVB: {}", measurement.uva, measurement.uvb);
 //! # }
 //! ```
+//!
+//! ### Set integration time to 400ms
+//!
+//! ```no_run
+//! extern crate linux_embedded_hal as hal;
+//! extern crate veml6075;
+//! use veml6075::{IntegrationTime, Veml6075};
+//!
+//! # fn main() {
+//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let mut sensor = Veml6075::new(dev);
+//! sensor.set_integration_time(IntegrationTime::Ms400).unwrap();
+//! # }
+//! ```
+//!
+//! ### Set high dynamic setting
+//!
+//! ```no_run
+//! extern crate linux_embedded_hal as hal;
+//! extern crate veml6075;
+//! use veml6075::{DynamicSetting, Veml6075};
+//!
+//! # fn main() {
+//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let mut sensor = Veml6075::new(dev);
+//! sensor.set_dynamic_setting(DynamicSetting::High).unwrap();
+//! # }
+//! ```
+//!
+//! ### Change mode to active force (one-shot) and trigger a measurement
+//!
+//! ```no_run
+//! extern crate linux_embedded_hal as hal;
+//! extern crate veml6075;
+//! use veml6075::{Veml6075, Mode};
+//!
+//! # fn main() {
+//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let mut sensor = Veml6075::new(dev);
+//! sensor.set_mode(Mode::ActiveForce).unwrap();
+//! loop {
+//!     sensor.trigger_measurement().unwrap();
+//!     // wait until measurement is ready (integration time)
+//!     let measurement = sensor.read_all().unwrap();
+//!     println!("Measurements UVA: {}, UVB: {}", measurement.uva, measurement.uvb);
+//! }
+//! # }
+//! ```
 
 #![deny(unsafe_code)]
 #![deny(missing_docs)]
