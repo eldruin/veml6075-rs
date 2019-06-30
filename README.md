@@ -4,7 +4,6 @@
 [![Docs](https://docs.rs/veml6075/badge.svg)](https://docs.rs/veml6075)
 [![Build Status](https://travis-ci.org/eldruin/veml6075-rs.svg?branch=master)](https://travis-ci.org/eldruin/veml6075-rs)
 [![Coverage Status](https://coveralls.io/repos/github/eldruin/veml6075-rs/badge.svg?branch=master)](https://coveralls.io/github/eldruin/veml6075-rs?branch=master)
-![Maintenance Intention](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
 
 This is a platform agnostic Rust driver for the VEML6075 UVA and UVB light sensor,
 based on the [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) traits.
