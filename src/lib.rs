@@ -48,6 +48,10 @@
 //!
 //! ## Usage examples (see also examples folder)
 //!
+//! Please find additional examples using hardware in this repository: [driver-examples]
+//!
+//! [driver-examples]: https://github.com/eldruin/driver-examples
+//!
 //! ### Read UVA and UVB
 //!
 //! Import this crate and an `embedded_hal` implementation, then instantiate
