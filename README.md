@@ -60,6 +60,11 @@ fn main() {
 }
 ```
 
+## Support
+
+For questions, issues, feature requests, and other changes, please file an
+[issue in the github project](https://github.com/eldruin/veml6075-rs/issues).
+
 ## License
 
 Licensed under either of
