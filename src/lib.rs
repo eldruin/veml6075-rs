@@ -5,11 +5,8 @@
 //!
 //! This driver allows you to:
 //! - Enable/disable the sensor. See: [`enable()`].
-//! - Read the UVA measurement. See: [`read_uva()`].
-//! - Read the UVB measurement. See: [`read_uvb()`].
-//! - Read the UVcomp1 measurement. See: [`read_uvcomp1()`].
-//! - Read the UVcomp2 measurement. See: [`read_uvcomp2()`].
-//! - Read all sensor data at once. See: [`read_all()`].
+//! - Read calibrated UVA and UVB measurement. See: [`read()`].
+//! - Read raw measurement. See: [`read_uva_raw()`].
 //! - Set integration time. See: [`set_integration_time()`].
 //! - Set dynamic setting. See: [`set_dynamic_setting()`].
 //! - Change operating mode. See: [`set_mode()`].
@@ -17,11 +14,8 @@
 //! - Read the device id. See: [`read_device_id()`].
 //!
 //! [`enable()`]: struct.Veml6075.html#method.enable
-//! [`read_uva()`]: struct.Veml6075.html#method.read_uva
-//! [`read_uvb()`]: struct.Veml6075.html#method.read_uvb
-//! [`read_uvcomp1()`]: struct.Veml6075.html#method.read_uvcomp1
-//! [`read_uvcomp2()`]: struct.Veml6075.html#method.read_uvcomp2
-//! [`read_all()`]: struct.Veml6075.html#method.read_all
+//! [`read()`]: struct.Veml6075.html#method.read
+//! [`read_uva_raw()`]: struct.Veml6075.html#method.read_uva_raw
 //! [`set_integration_time()`]: struct.Veml6075.html#method.set_integration_time
 //! [`set_dynamic_setting()`]: struct.Veml6075.html#method.set_dynamic_setting
 //! [`set_mode()`]: struct.Veml6075.html#method.set_mode
@@ -52,7 +46,7 @@
 //!
 //! [driver-examples]: https://github.com/eldruin/driver-examples
 //!
-//! ### Read UVA and UVB
+//! ### Read calibrated UVA and UVB
 //!
 //! Import this crate and an `embedded_hal` implementation, then instantiate
 //! the device:
@@ -60,29 +54,13 @@
 //! ```no_run
 //! extern crate linux_embedded_hal as hal;
 //! extern crate veml6075;
-//! use veml6075::Veml6075;
+//! use veml6075::{Calibration, Veml6075};
 //!
 //! # fn main() {
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
-//! let mut sensor = Veml6075::new(dev);
-//! let uva = sensor.read_uva().unwrap();
-//! let uvb = sensor.read_uvb().unwrap();
-//! println!("Measurements UVA: {}, UVB: {}", uva, uvb);
-//! # }
-//! ```
-//!
-//! ### Read all channels at once
-//!
-//! ```no_run
-//! extern crate linux_embedded_hal as hal;
-//! extern crate veml6075;
-//! use veml6075::Veml6075;
-//!
-//! # fn main() {
-//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
-//! let mut sensor = Veml6075::new(dev);
-//! let measurement = sensor.read_all().unwrap();
-//! println!("Measurements UVA: {}, UVB: {}", measurement.uva, measurement.uvb);
+//! let mut sensor = Veml6075::new(dev, Calibration::default());
+//! let m = sensor.read().unwrap();
+//! println!("Measurements UVA: {:2}, UVB: {:2}", m.uva, m.uvb);
 //! # }
 //! ```
 //!
@@ -91,11 +69,11 @@
 //! ```no_run
 //! extern crate linux_embedded_hal as hal;
 //! extern crate veml6075;
-//! use veml6075::{IntegrationTime, Veml6075};
+//! use veml6075::{Calibration, IntegrationTime, Veml6075};
 //!
 //! # fn main() {
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
-//! let mut sensor = Veml6075::new(dev);
+//! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! sensor.set_integration_time(IntegrationTime::Ms400).unwrap();
 //! # }
 //! ```
@@ -105,11 +83,11 @@
 //! ```no_run
 //! extern crate linux_embedded_hal as hal;
 //! extern crate veml6075;
-//! use veml6075::{DynamicSetting, Veml6075};
+//! use veml6075::{Calibration, DynamicSetting, Veml6075};
 //!
 //! # fn main() {
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
-//! let mut sensor = Veml6075::new(dev);
+//! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! sensor.set_dynamic_setting(DynamicSetting::High).unwrap();
 //! # }
 //! ```
@@ -119,18 +97,34 @@
 //! ```no_run
 //! extern crate linux_embedded_hal as hal;
 //! extern crate veml6075;
-//! use veml6075::{Veml6075, Mode};
+//! use veml6075::{Calibration, Mode, Veml6075};
 //!
 //! # fn main() {
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
-//! let mut sensor = Veml6075::new(dev);
+//! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! sensor.set_mode(Mode::ActiveForce).unwrap();
 //! loop {
 //!     sensor.trigger_measurement().unwrap();
 //!     // wait until measurement is ready (integration time)
-//!     let measurement = sensor.read_all().unwrap();
-//!     println!("Measurements UVA: {}, UVB: {}", measurement.uva, measurement.uvb);
+//!     let m = sensor.read().unwrap();
+//!     println!("Measurements UVA: {:2}, UVB: {:2}", m.uva, m.uvb);
 //! }
+//! # }
+//! ```
+//!
+//! ### Read raw measurements for UV and UVB
+//!
+//! ```no_run
+//! extern crate linux_embedded_hal as hal;
+//! extern crate veml6075;
+//! use veml6075::{Calibration, Veml6075};
+//!
+//! # fn main() {
+//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let mut sensor = Veml6075::new(dev, Calibration::default());
+//! let uva = sensor.read_uva_raw().unwrap();
+//! let uvb = sensor.read_uvb_raw().unwrap();
+//! println!("Measurements UVA: {}, UVB: {}", uva, uvb);
 //! # }
 //! ```
 
@@ -147,17 +141,13 @@ pub enum Error<E> {
     I2C(E),
 }
 
-/// Result of measurement of all channels
+/// Calibrated Measurement
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Measurement {
-    /// UVA sensor data
-    pub uva: u16,
-    /// UVB sensor data
-    pub uvb: u16,
-    /// UVcomp1 sensor data
-    pub uvcomp1: u16,
-    /// UVcomp2 sensor data
-    pub uvcomp2: u16,
+    /// UVA calibrated reading
+    pub uva: f32,
+    /// UVB calibrated reading
+    pub uvb: f32,
 }
 
 /// Integration time
@@ -193,6 +183,23 @@ pub enum Mode {
     ActiveForce,
 }
 
+/// Calibration coefficients
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Calibration {
+    /// UVA visible (a) coefficient
+    pub uva_visible: f32,
+    /// UVA IR (b) coefficient
+    pub uva_ir: f32,
+    /// UVB visible (c) coefficient
+    pub uvb_visible: f32,
+    /// UVB IR (d) coefficient
+    pub uvb_ir: f32,
+    /// UVA responsivity
+    pub uva_responsivity: f32,
+    /// UVB responsivity
+    pub uvb_responsivity: f32,
+}
+
 /// Veml6075 device driver.
 #[derive(Debug, Default)]
 pub struct Veml6075<I2C> {
@@ -200,6 +207,20 @@ pub struct Veml6075<I2C> {
     i2c: I2C,
     /// Configuration register status.
     config: u8,
+    calibration: Calibration,
 }
 
 mod device_impl;
+
+impl Default for Calibration {
+    fn default() -> Self {
+        Calibration {
+            uva_visible: 2.22,
+            uva_ir: 1.33,
+            uvb_visible: 2.95,
+            uvb_ir: 1.74,
+            uva_responsivity: 0.001461,
+            uvb_responsivity: 0.002591,
+        }
+    }
+}

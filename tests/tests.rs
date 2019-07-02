@@ -1,7 +1,9 @@
 extern crate embedded_hal_mock as hal;
 extern crate veml6075;
 use hal::i2c::{Mock as I2cMock, Transaction as I2cTrans};
-use veml6075::{DynamicSetting as DS, IntegrationTime as IT, Measurement, Mode, Veml6075};
+use veml6075::{
+    Calibration, DynamicSetting as DS, IntegrationTime as IT, Measurement, Mode, Veml6075,
+};
 
 const DEVICE_ADDRESS: u8 = 0x10;
 struct Register;
@@ -15,7 +17,7 @@ impl Register {
 }
 
 pub fn new(transactions: &[I2cTrans]) -> Veml6075<I2cMock> {
-    Veml6075::new(I2cMock::new(&transactions))
+    Veml6075::new(I2cMock::new(&transactions), Calibration::default())
 }
 
 pub fn destroy(sensor: Veml6075<I2cMock>) {
@@ -67,30 +69,28 @@ macro_rules! read_test {
     };
 }
 
-read_test!(can_read_uva, read_uva, UVA);
-read_test!(can_read_uvb, read_uvb, UVB);
-read_test!(can_read_uvcomp1, read_uvcomp1, UVCOMP1);
-read_test!(can_read_uvcomp2, read_uvcomp2, UVCOMP2);
+read_test!(can_read_uva, read_uva_raw, UVA);
+read_test!(can_read_uvb, read_uvb_raw, UVB);
+read_test!(can_read_uvcomp1, read_uvcomp1_raw, UVCOMP1);
+read_test!(can_read_uvcomp2, read_uvcomp2_raw, UVCOMP2);
 read_test!(can_read_dev_id, read_device_id, DEVICE_ID);
 
 #[test]
-fn can_read_all() {
+fn can_read_calibrated() {
     let transactions = [
-        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVA], vec![0x34, 0x12]),
-        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVB], vec![0x78, 0x56]),
-        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVCOMP1], vec![0xBC, 0x9A]),
-        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVCOMP2], vec![0xF0, 0xDE]),
+        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVA], vec![0x7F, 0x0F]),
+        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVB], vec![0xBA, 0x16]),
+        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVCOMP1], vec![0xEF, 0x03]),
+        I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVCOMP2], vec![0xD7, 0x02]),
     ];
     let mut dev = new(&transactions);
-    let measurement = dev.read_all().unwrap();
-    assert_eq!(
-        Measurement {
-            uva: 0x1234,
-            uvb: 0x5678,
-            uvcomp1: 0x9ABC,
-            uvcomp2: 0xDEF0,
-        },
-        measurement
-    );
+    let Measurement { uva, uvb } = dev.read().unwrap();
+    let expected_uva = 3967.0 - 2.22 * 1007.0 - 1.33 * 727.0;
+    assert!(uva - 0.5 < expected_uva);
+    assert!(uva + 0.5 > expected_uva);
+    let expected_uvb = 5818.0 - 2.95 * 1007.0 - 1.74 * 727.0;
+    assert!(uvb - 0.5 < expected_uvb);
+    assert!(uvb + 0.5 > expected_uvb);
+
     destroy(dev);
 }

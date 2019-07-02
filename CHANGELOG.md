@@ -8,12 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
-- Method to read all channels at once.
+- Method to read calibrated measurement.
 - Methods to set the integration time and dynamic setting.
 - Method to change the operating mode and triggering a measurement when on active force mode.
 
 ### Changed
 - [breaking-change] Renamed VEML6075 -> Veml6075 to comply with Rust naming conventions.
+- [breaking-change] Renamed methods to read raw measurements
 
 ## [0.1.0] - 2018-10-13
 

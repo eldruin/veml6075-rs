@@ -1,5 +1,5 @@
 //! Device implementation
-use super::{DynamicSetting, Error, IntegrationTime, Measurement, Mode, Veml6075};
+use super::{Calibration, DynamicSetting, Error, IntegrationTime, Measurement, Mode, Veml6075};
 use hal::blocking::i2c::Write;
 
 struct Register;
@@ -27,10 +27,11 @@ where
     I2C: Write<Error = E>,
 {
     /// Create new instance of the Veml6075 device.
-    pub fn new(i2c: I2C) -> Self {
+    pub fn new(i2c: I2C, calibration: Calibration) -> Self {
         Veml6075 {
             i2c,
             config: 0x01, // shutdown
+            calibration: calibration,
         }
     }
 
@@ -109,33 +110,38 @@ impl<I2C, E> Veml6075<I2C>
 where
     I2C: hal::blocking::i2c::WriteRead<Error = E>,
 {
-    /// Read the sensor data of all channels at once.
-    pub fn read_all(&mut self) -> Result<Measurement, Error<E>> {
-        Ok(Measurement {
-            uva: self.read_uva()?,
-            uvb: self.read_uvb()?,
-            uvcomp1: self.read_uvcomp1()?,
-            uvcomp2: self.read_uvcomp2()?,
-        })
+    /// Read the sensor data and calculate calibrated reading values.
+    pub fn read(&mut self) -> Result<Measurement, Error<E>> {
+        let uva = self.read_uva_raw()?;
+        let uvb = self.read_uvb_raw()?;
+        let uvcomp1 = self.read_uvcomp1_raw()?;
+        let uvcomp2 = self.read_uvcomp2_raw()?;
+        let uva = f32::from(uva)
+            - (self.calibration.uva_visible * f32::from(uvcomp1))
+            - (self.calibration.uva_ir * f32::from(uvcomp2));
+        let uvb = f32::from(uvb)
+            - (self.calibration.uvb_visible * f32::from(uvcomp1))
+            - (self.calibration.uvb_ir * f32::from(uvcomp2));
+        Ok(Measurement { uva, uvb })
     }
 
-    /// Read the UVA sensor data.
-    pub fn read_uva(&mut self) -> Result<u16, Error<E>> {
+    /// Read the raw UVA sensor data.
+    pub fn read_uva_raw(&mut self) -> Result<u16, Error<E>> {
         self.read_register(Register::UVA)
     }
 
-    /// Read the UVB sensor data.
-    pub fn read_uvb(&mut self) -> Result<u16, Error<E>> {
+    /// Read the raw UVB sensor data.
+    pub fn read_uvb_raw(&mut self) -> Result<u16, Error<E>> {
         self.read_register(Register::UVB)
     }
 
-    /// Read the UVcomp1 sensor data.
-    pub fn read_uvcomp1(&mut self) -> Result<u16, Error<E>> {
+    /// Read the raw UVcomp1 sensor data.
+    pub fn read_uvcomp1_raw(&mut self) -> Result<u16, Error<E>> {
         self.read_register(Register::UVCOMP1)
     }
 
-    /// Read the UVcomp2 sensor data.
-    pub fn read_uvcomp2(&mut self) -> Result<u16, Error<E>> {
+    /// Read the raw UVcomp2 sensor data.
+    pub fn read_uvcomp2_raw(&mut self) -> Result<u16, Error<E>> {
         self.read_register(Register::UVCOMP2)
     }
 
