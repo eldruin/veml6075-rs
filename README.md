@@ -32,10 +32,10 @@ operated via the simple command format of I2C (SMBus compatible) interface proto
 VEML6075's operating voltage ranges from 1.7 V to 3.6 V.
 
 Datasheet:
-- [VEML6075](https://www.vishay.com/docs/84304/veml6075.pdf)
+- [VEML6075](https://cdn.sparkfun.com/assets/3/c/3/2/f/veml6075.pdf)
 
 Application note:
-- [VEML6075 AN](https://www.vishay.com/docs/84339/designingveml6075.pdf)
+- [Designing the VEML6075 into an Application](https://cdn.sparkfun.com/assets/3/9/d/4/1/designingveml6075.pdf)
 
 ## Usage
 
