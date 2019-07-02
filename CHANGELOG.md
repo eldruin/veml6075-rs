@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
-- Method to read calibrated measurement.
+- Method to read calibrated measurement of UVA, UVB and UV index.
 - Methods to set the integration time and dynamic setting.
 - Method to change the operating mode and triggering a measurement when on active force mode.
 

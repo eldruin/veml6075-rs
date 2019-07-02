@@ -10,7 +10,7 @@ based on the [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) tra
 
 This driver allows you to:
 - Enable/disable the sensor. See: `enable()`.
-- Read calibrated UVA and UVB measurement. See: `read()`.
+- Read calibrated UVA, UVB and UV index measurement. See: `read()`.
 - Read raw measurement. See: `read_uva_raw()`.
 - Set integration time. See: `set_integration_time()`.
 - Set dynamic setting. See: `set_dynamic_setting()`.
@@ -52,7 +52,7 @@ fn main() {
     let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
     let mut sensor = Veml6075::new(dev, Calibration::default());
     let m = sensor.read().unwrap();
-    println!("Measurements UVA: {:2}, UVB: {:2}", m.uva, m.uvb);
+    println!("UVA: {:2}, UVB: {:2}, UVI: {:2}", m.uva, m.uvb, m.uv_index);
 }
 ```
 

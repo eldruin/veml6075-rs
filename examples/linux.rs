@@ -6,5 +6,5 @@ fn main() {
     let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
     let mut sensor = Veml6075::new(dev, Calibration::default());
     let m = sensor.read().unwrap();
-    println!("Measurements UVA: {:2}, UVB: {:2}", m.uva, m.uvb);
+    println!("UVA: {:2}, UVB: {:2}, UVI: {:2}", m.uva, m.uvb, m.uv_index);
 }

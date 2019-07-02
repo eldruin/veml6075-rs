@@ -122,7 +122,10 @@ where
         let uvb = f32::from(uvb)
             - (self.calibration.uvb_visible * f32::from(uvcomp1))
             - (self.calibration.uvb_ir * f32::from(uvcomp2));
-        Ok(Measurement { uva, uvb })
+        let uv_index = (uva * self.calibration.uva_responsivity
+            + uvb * self.calibration.uvb_responsivity)
+            / 2.0;
+        Ok(Measurement { uva, uvb, uv_index })
     }
 
     /// Read the raw UVA sensor data.

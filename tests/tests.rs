@@ -84,13 +84,17 @@ fn can_read_calibrated() {
         I2cTrans::write_read(DEVICE_ADDRESS, vec![Register::UVCOMP2], vec![0xD7, 0x02]),
     ];
     let mut dev = new(&transactions);
-    let Measurement { uva, uvb } = dev.read().unwrap();
+    let Measurement { uva, uvb, uv_index } = dev.read().unwrap();
+
     let expected_uva = 3967.0 - 2.22 * 1007.0 - 1.33 * 727.0;
     assert!(uva - 0.5 < expected_uva);
     assert!(uva + 0.5 > expected_uva);
     let expected_uvb = 5818.0 - 2.95 * 1007.0 - 1.74 * 727.0;
     assert!(uvb - 0.5 < expected_uvb);
     assert!(uvb + 0.5 > expected_uvb);
+    let expected_uv_index = (uva * 0.001461 + uvb * 0.002591) / 2.0;
+    assert!(uv_index - 0.5 < expected_uv_index);
+    assert!(uv_index + 0.5 > expected_uv_index);
 
     destroy(dev);
 }

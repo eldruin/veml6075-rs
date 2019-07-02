@@ -5,7 +5,7 @@
 //!
 //! This driver allows you to:
 //! - Enable/disable the sensor. See: [`enable()`].
-//! - Read calibrated UVA and UVB measurement. See: [`read()`].
+//! - Read calibrated UVA, UVB and UV index measurement. See: [`read()`].
 //! - Read raw measurement. See: [`read_uva_raw()`].
 //! - Set integration time. See: [`set_integration_time()`].
 //! - Set dynamic setting. See: [`set_dynamic_setting()`].
@@ -46,7 +46,7 @@
 //!
 //! [driver-examples]: https://github.com/eldruin/driver-examples
 //!
-//! ### Read calibrated UVA and UVB
+//! ### Read calibrated UVA, UVB and UV index
 //!
 //! Import this crate and an `embedded_hal` implementation, then instantiate
 //! the device:
@@ -60,7 +60,7 @@
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! let m = sensor.read().unwrap();
-//! println!("Measurements UVA: {:2}, UVB: {:2}", m.uva, m.uvb);
+//! println!("UVA: {:2}, UVB: {:2}, UVI: {:2}", m.uva, m.uvb, m.uv_index);
 //! # }
 //! ```
 //!
@@ -112,7 +112,7 @@
 //! # }
 //! ```
 //!
-//! ### Read raw measurements for UV and UVB
+//! ### Read raw measurements for UVA and UVB
 //!
 //! ```no_run
 //! extern crate linux_embedded_hal as hal;
@@ -148,6 +148,8 @@ pub struct Measurement {
     pub uva: f32,
     /// UVB calibrated reading
     pub uvb: f32,
+    /// UV index
+    pub uv_index: f32,
 }
 
 /// Integration time
