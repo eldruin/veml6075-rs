@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.2.0] - 2019-09-28
 
+This driver is now functionally complete.
+
 ### Added
 - Method to read calibrated measurement of UVA, UVB and UV index.
 - Methods to set the integration time and dynamic setting.
