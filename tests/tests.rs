@@ -125,4 +125,12 @@ fn measurement_can_store() {
     assert!(m.uvb + 0.5 > 2.2);
     assert!(m.uv_index - 0.5 < 3.3);
     assert!(m.uv_index + 0.5 > 3.3);
+    assert_eq!(
+        m,
+        Measurement {
+            uva: 1.1,
+            uvb: 2.2,
+            uv_index: 3.3,
+        }
+    );
 }
