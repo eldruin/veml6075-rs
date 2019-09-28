@@ -223,8 +223,8 @@ impl Default for Calibration {
             uva_ir: 1.33,
             uvb_visible: 2.95,
             uvb_ir: 1.74,
-            uva_responsivity: 0.001461,
-            uvb_responsivity: 0.002591,
+            uva_responsivity: 0.001_461,
+            uvb_responsivity: 0.002_591,
         }
     }
 }

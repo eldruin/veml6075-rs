@@ -92,7 +92,7 @@ fn can_read_calibrated() {
     let expected_uvb = 5818.0 - 2.95 * 1007.0 - 1.74 * 727.0;
     assert!(uvb - 0.5 < expected_uvb);
     assert!(uvb + 0.5 > expected_uvb);
-    let expected_uv_index = (uva * 0.001461 + uvb * 0.002591) / 2.0;
+    let expected_uv_index = (uva * 0.001_461 + uvb * 0.002_591) / 2.0;
     assert!(uv_index - 0.5 < expected_uv_index);
     assert!(uv_index + 0.5 > expected_uv_index);
 
@@ -106,8 +106,8 @@ fn calibration_default() {
         uva_ir: 1.33,
         uvb_visible: 2.95,
         uvb_ir: 1.74,
-        uva_responsivity: 0.001461,
-        uvb_responsivity: 0.002591,
+        uva_responsivity: 0.001_461,
+        uvb_responsivity: 0.002_591,
     };
     assert_eq!(c, Calibration::default());
 }
