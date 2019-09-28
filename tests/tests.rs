@@ -98,3 +98,31 @@ fn can_read_calibrated() {
 
     destroy(dev);
 }
+
+#[test]
+fn calibration_default() {
+    let c = Calibration {
+        uva_visible: 2.22,
+        uva_ir: 1.33,
+        uvb_visible: 2.95,
+        uvb_ir: 1.74,
+        uva_responsivity: 0.001461,
+        uvb_responsivity: 0.002591,
+    };
+    assert_eq!(c, Calibration::default());
+}
+
+#[test]
+fn measurement_can_store() {
+    let m = Measurement {
+        uva: 1.1,
+        uvb: 2.2,
+        uv_index: 3.3,
+    };
+    assert!(m.uva - 0.5 < 1.1);
+    assert!(m.uva + 0.5 > 1.1);
+    assert!(m.uvb - 0.5 < 2.2);
+    assert!(m.uvb + 0.5 > 2.2);
+    assert!(m.uv_index - 0.5 < 3.3);
+    assert!(m.uv_index + 0.5 > 3.3);
+}
