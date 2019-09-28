@@ -13,6 +13,8 @@
 //! - Trigger measurement when on active force mode. See: [`trigger_measurement()`].
 //! - Read the device id. See: [`read_device_id()`].
 //!
+//! [Introductory blog post](https://blog.eldruin.com/veml6075-uva-uvb-uv-index-light-sensor-driver-in-rust/)
+//!
 //! [`enable()`]: struct.Veml6075.html#method.enable
 //! [`read()`]: struct.Veml6075.html#method.read
 //! [`read_uva_raw()`]: struct.Veml6075.html#method.read_uva_raw

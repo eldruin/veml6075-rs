@@ -18,11 +18,14 @@ This driver allows you to:
 - Trigger measurement when on active force mode. See: `trigger_measurement()`.
 - Read the device id. See: `read_device_id()`.
 
+[Introductory blog post](https://blog.eldruin.com/veml6075-uva-uvb-uv-index-light-sensor-driver-in-rust/)
+
 ## The device
 The VEML6075 senses UVA and UVB light and incorporates photodiode, amplifiers,
 and analog / digital circuits into a single chip using a CMOS process. When the
 UV sensor is applied, it is able to detect UVA and UVB intensity to provide a
 measure of the signal strength as well as allowing for UVI measurement.
+
 The VEML6075 provides excellent temperature compensation capability for keeping
 the output stable under changing temperature. VEML6075's functionality is easily
 operated via the simple command format of I2C (SMBus compatible) interface protocol.
