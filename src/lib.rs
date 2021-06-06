@@ -32,7 +32,7 @@
 //! as well as allowing for UVI measurement.
 //! The VEML6075 provides excellent temperature compensation capability
 //! for keeping the output stable under changing temperature.
-//! VEML6075's functionality is easilyoperated via the simple command
+//! VEML6075's functionality is easily operated via the simple command
 //! format of I2C (SMBus compatible) interface protocol.
 //! VEML6075's operating voltage ranges from 1.7 V to 3.6 V.
 //!
@@ -54,11 +54,10 @@
 //! the device:
 //!
 //! ```no_run
-//! extern crate linux_embedded_hal as hal;
-//! extern crate veml6075;
+//! use linux_embedded_hal::I2cdev;
 //! use veml6075::{Calibration, Veml6075};
 //!
-//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let dev = I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! let m = sensor.read().unwrap();
 //! println!("UVA: {:2}, UVB: {:2}, UVI: {:2}", m.uva, m.uvb, m.uv_index);
@@ -67,11 +66,10 @@
 //! ### Set integration time to 400ms
 //!
 //! ```no_run
-//! extern crate linux_embedded_hal as hal;
-//! extern crate veml6075;
+//! use linux_embedded_hal::I2cdev;
 //! use veml6075::{Calibration, IntegrationTime, Veml6075};
 //!
-//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let dev = I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! sensor.set_integration_time(IntegrationTime::Ms400).unwrap();
 //! ```
@@ -79,11 +77,10 @@
 //! ### Set high dynamic setting
 //!
 //! ```no_run
-//! extern crate linux_embedded_hal as hal;
-//! extern crate veml6075;
+//! use linux_embedded_hal::I2cdev;
 //! use veml6075::{Calibration, DynamicSetting, Veml6075};
 //!
-//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let dev = I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! sensor.set_dynamic_setting(DynamicSetting::High).unwrap();
 //! ```
@@ -91,11 +88,10 @@
 //! ### Change mode to active force (one-shot) and trigger a measurement
 //!
 //! ```no_run
-//! extern crate linux_embedded_hal as hal;
-//! extern crate veml6075;
+//! use linux_embedded_hal::I2cdev;
 //! use veml6075::{Calibration, Mode, Veml6075};
 //!
-//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let dev = I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! sensor.set_mode(Mode::ActiveForce).unwrap();
 //! loop {
@@ -109,11 +105,10 @@
 //! ### Read raw measurements for UVA and UVB
 //!
 //! ```no_run
-//! extern crate linux_embedded_hal as hal;
-//! extern crate veml6075;
+//! use linux_embedded_hal::I2cdev;
 //! use veml6075::{Calibration, Veml6075};
 //!
-//! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
+//! let dev = I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! let uva = sensor.read_uva_raw().unwrap();
 //! let uvb = sensor.read_uvb_raw().unwrap();
@@ -124,8 +119,6 @@
 #![deny(unsafe_code)]
 #![deny(missing_docs)]
 #![no_std]
-
-extern crate embedded_hal as hal;
 
 /// All possible errors in this crate
 #[derive(Debug)]

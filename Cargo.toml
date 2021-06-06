@@ -10,7 +10,7 @@ keywords = ["light", "sensor", "i2c", "driver", "embedded-hal-driver"]
 categories = ["embedded", "hardware-support", "no-std"]
 homepage = "https://github.com/eldruin/veml6075-rs"
 documentation = "https://docs.rs/veml6075"
-
+edition = "2018"
 include = [
     "/**/*.rs",
     "/Cargo.toml",

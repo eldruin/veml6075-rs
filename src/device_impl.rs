@@ -1,6 +1,6 @@
 //! Device implementation
-use super::{Calibration, DynamicSetting, Error, IntegrationTime, Measurement, Mode, Veml6075};
-use hal::blocking::i2c::Write;
+use crate::{Calibration, DynamicSetting, Error, IntegrationTime, Measurement, Mode, Veml6075};
+use embedded_hal::blocking::i2c::{Write, WriteRead};
 
 struct Register;
 impl Register {
@@ -108,7 +108,7 @@ where
 
 impl<I2C, E> Veml6075<I2C>
 where
-    I2C: hal::blocking::i2c::WriteRead<Error = E>,
+    I2C: WriteRead<Error = E>,
 {
     /// Read the sensor data and calculate calibrated reading values.
     pub fn read(&mut self) -> Result<Measurement, Error<E>> {

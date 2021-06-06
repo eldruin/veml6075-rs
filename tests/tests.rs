@@ -1,6 +1,4 @@
-extern crate embedded_hal_mock as hal;
-extern crate veml6075;
-use hal::i2c::{Mock as I2cMock, Transaction as I2cTrans};
+use embedded_hal_mock::i2c::{Mock as I2cMock, Transaction as I2cTrans};
 use veml6075::{
     Calibration, DynamicSetting as DS, IntegrationTime as IT, Measurement, Mode, Veml6075,
 };
