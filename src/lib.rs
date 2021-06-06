@@ -58,12 +58,10 @@
 //! extern crate veml6075;
 //! use veml6075::{Calibration, Veml6075};
 //!
-//! # fn main() {
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! let m = sensor.read().unwrap();
 //! println!("UVA: {:2}, UVB: {:2}, UVI: {:2}", m.uva, m.uvb, m.uv_index);
-//! # }
 //! ```
 //!
 //! ### Set integration time to 400ms
@@ -73,11 +71,9 @@
 //! extern crate veml6075;
 //! use veml6075::{Calibration, IntegrationTime, Veml6075};
 //!
-//! # fn main() {
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! sensor.set_integration_time(IntegrationTime::Ms400).unwrap();
-//! # }
 //! ```
 //!
 //! ### Set high dynamic setting
@@ -87,11 +83,9 @@
 //! extern crate veml6075;
 //! use veml6075::{Calibration, DynamicSetting, Veml6075};
 //!
-//! # fn main() {
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! sensor.set_dynamic_setting(DynamicSetting::High).unwrap();
-//! # }
 //! ```
 //!
 //! ### Change mode to active force (one-shot) and trigger a measurement
@@ -101,7 +95,6 @@
 //! extern crate veml6075;
 //! use veml6075::{Calibration, Mode, Veml6075};
 //!
-//! # fn main() {
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! sensor.set_mode(Mode::ActiveForce).unwrap();
@@ -111,7 +104,6 @@
 //!     let m = sensor.read().unwrap();
 //!     println!("Measurements UVA: {:2}, UVB: {:2}", m.uva, m.uvb);
 //! }
-//! # }
 //! ```
 //!
 //! ### Read raw measurements for UVA and UVB
@@ -121,13 +113,11 @@
 //! extern crate veml6075;
 //! use veml6075::{Calibration, Veml6075};
 //!
-//! # fn main() {
 //! let dev = hal::I2cdev::new("/dev/i2c-1").unwrap();
 //! let mut sensor = Veml6075::new(dev, Calibration::default());
 //! let uva = sensor.read_uva_raw().unwrap();
 //! let uvb = sensor.read_uvb_raw().unwrap();
 //! println!("Measurements UVA: {}, UVB: {}", uva, uvb);
-//! # }
 //! ```
 
 #![doc(html_root_url = "https://docs.rs/veml6075/0.2.0")]
