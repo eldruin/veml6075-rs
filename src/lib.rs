@@ -130,6 +130,7 @@
 //! # }
 //! ```
 
+#![doc(html_root_url = "https://docs.rs/veml6075/0.2.0")]
 #![deny(unsafe_code)]
 #![deny(missing_docs)]
 #![no_std]
