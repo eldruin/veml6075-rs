@@ -17,7 +17,7 @@ impl Register {
 }
 
 pub fn new(transactions: &[I2cTrans]) -> Veml6075<I2cMock> {
-    Veml6075::new(I2cMock::new(&transactions), Calibration::default())
+    Veml6075::new(I2cMock::new(transactions), Calibration::default())
 }
 
 pub fn destroy(sensor: Veml6075<I2cMock>) {
