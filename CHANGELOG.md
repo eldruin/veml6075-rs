@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ...
 
+## [0.2.1] - 2021-06-06
+
+### Changed
+- Simplified code in examples
+
 ## [0.2.0] - 2019-09-28
 
 This driver is now functionally complete.
@@ -26,6 +31,7 @@ This driver is now functionally complete.
 
 This is the initial release to crates.io. All changes will be documented in this CHANGELOG.
 
-[Unreleased]: https://github.com/eldruin/veml6075-rs/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/eldruin/veml6075-rs/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/eldruin/veml6075-rs/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/eldruin/veml6075-rs/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/eldruin/veml6075-rs/releases/tag/v0.1.0
