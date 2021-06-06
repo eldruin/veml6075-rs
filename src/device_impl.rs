@@ -31,7 +31,7 @@ where
         Veml6075 {
             i2c,
             config: 0x01, // shutdown
-            calibration
+            calibration,
         }
     }
 
