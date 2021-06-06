@@ -20,10 +20,6 @@ include = [
     "/LICENSE-APACHE",
 ]
 
-[badges]
-travis-ci = { repository = "eldruin/veml6075-rs", branch = "master" }
-coveralls = { repository = "eldruin/veml6075-rs", branch = "master", service = "github" }
-
 [dependencies]
 embedded-hal = "0.2"
 

@@ -2,7 +2,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/veml6075.svg)](https://crates.io/crates/veml6075)
 [![Docs](https://docs.rs/veml6075/badge.svg)](https://docs.rs/veml6075)
-[![Build Status](https://travis-ci.org/eldruin/veml6075-rs.svg?branch=master)](https://travis-ci.org/eldruin/veml6075-rs)
+[![Build Status](https://github.com/eldruin/veml6075-rs/workflows/Build/badge.svg)](https://github.com/eldruin/veml6075-rs/actions?query=workflow%3ABuild)
 [![Coverage Status](https://coveralls.io/repos/github/eldruin/veml6075-rs/badge.svg?branch=master)](https://coveralls.io/github/eldruin/veml6075-rs?branch=master)
 
 This is a platform agnostic Rust driver for the VEML6075 UVA and UVB light sensor,
